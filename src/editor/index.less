@@ -1,0 +1,36 @@
+.next-editor {
+  .next-editor__toolbar {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 4px;
+    .next-editor__toolbar-group {
+      button {
+        display: inline-block;
+        width: auto;
+        text-align: center;
+        padding: 4px;
+        background-color: transparent;
+        border: none;
+        margin: 0;
+        cursor: pointer;
+        color: #595959;
+        outline: none;
+      }
+      button:hover {
+        background-color: #e8e8e8;
+      }
+      button.active {
+        color: blue;
+      }
+      button[disabled] {
+        cursor: not-allowed;
+        color: #ccc;
+      }
+    }
+  }
+  .next-editor_content {
+    padding: 4px;
+    border: 1px solid #ccc;
+  }
+}
