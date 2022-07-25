@@ -1,8 +1,6 @@
 # 📦 Next-Editor-Engine
 This is the core engine library of the editor, which has the basic functions required for general editing.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-
 ## Engine basic functions
 + bold (ctrl + b)
 + italic (ctrl + i)
@@ -455,3 +453,5 @@ class Editor extends React.Component {
 }
 export default Editor;
 ```
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
