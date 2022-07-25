@@ -65,7 +65,7 @@ export default (range, block, noEmptyBlock) => {
 
   // Block 的两边添加新的 Block
   if (isEmptyNode(leftBlock[0])) {
-    if (isEmptyNode[rightBlock[0]] && !noEmptyBlock) {
+    if (isEmptyNode(rightBlock[0]) && !noEmptyBlock) {
       container.before(leftBlock);
     }
   } else {
