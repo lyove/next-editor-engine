@@ -1,85 +1,457 @@
-# 📦 webpack-js-library-boilerplate
+# 📦 Next-Editor-Engine
+This is the core engine library of the editor, which has the basic functions required for general editing.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Webpack 5 boilerplate using Babel and PostCSS.  
-With Eslint+Prettier+husky+lint-staged
-## Installation
+## Engine basic functions
++ bold (ctrl + b)
++ italic (ctrl + i)
++ underline (ctrl + u)
++ alignment (left: ctrl + shift + l , center: ctrl + shift + c , right: ctrl + shift + r , justify: ctrl + shift + j)
++ backcolor
++ fontcolor
++ fontsize
++ heading (h1 ctrl+alt+1,h2 ctrl+alt+2,h3 ctrl+alt+3,h4 ctrl+alt+4,h5 ctrl+alt+5,h6 ctrl+alt+6)
++ tasklist (orderedlist (ctrl+shift+7) , unorderedlist (ctrl+shift+8) , tasklist (ctrl+shift+9))
++ code (ctrl + e)
++ link (ctrl + k)
++ hr (ctrl + shift + e)
++ strikethrough (ctrl+shift+x)
++ quote (ctrl+shift+u)
++ sub (ctrl+,)
++ sup (ctrl+.)
++ indent (ctrl+])
++ outdent (ctrl+[)
++ undo (ctrl + z)
++ redo (ctrl + y)
++ removeformat (ctrl+\)
++ markdown
 
-Clone this repo and npm install.
-
-```bash
-npm i
-```
 
 ## Usage
 
-### Development server
+**JS**
 
-```bash
-npm start
+constructor.js  
+```
+import Engine from "next-editor-engine";
+
+const EDITOR_CLS = "next-editor";
+const TOOLBAR_BTN_CLS = "toolbar-btn";
+const headingGroup = ["h1", "h2", "h3", "h4", "h5", "h6"];
+const listGroup = ["orderedlist", "unorderedlist", "tasklist"];
+const defaultToolbarItem = [
+  [...headingGroup],
+  ["bold", "italic", "underline", "quote"],
+  [...listGroup],
+];
+
+/**
+ * Constructor
+ */
+function Constructor({ editorElement }) {
+  const editWrap =
+    typeof editorElement === "string" ? document.getElementById(editorElement) : editorElement;
+
+  if (!editWrap) {
+    if (typeof editorElement === "string") {
+      throw Error(
+        `[NextEditor.create.fail] The element for that id was not found (ID: "${editorElement}")`
+      );
+    }
+    throw Error("[NextEditor.create.fail] NextEditor requires html element or element id");
+  }
+
+  this.editArea = (() => {
+    const editArea_div = document.createElement("DIV");
+    editArea_div.className = `${EDITOR_CLS}_content`;
+    return editArea_div;
+  })();
+
+  /**
+   * Engine Create
+   */
+  this.engine = (() => {
+    const engine = Engine.create(this.editArea, {});
+    engine.on("change", (value) => {
+      console.log(value);
+      this.updateState();
+    });
+
+    engine.on("select", (e) => {
+      console.log(e);
+      this.updateState();
+    });
+    return engine;
+  })();
+
+  this.updateState = () => {
+    //
+  };
+
+  /**
+   * Editor init
+   * @param {*} param
+   */
+  this.init = ({ toolbarItem }) => {
+    editWrap.className = `${EDITOR_CLS}`;
+    if (
+      !toolbarItem ||
+      !Array.isArray(toolbarItem) ||
+      (Array.isArray(toolbarItem) && toolbarItem.length === 0)
+    ) {
+      toolbarItem = defaultToolbarItem;
+    }
+    const toolbar = this.createToolbar(toolbarItem);
+    editWrap.insertAdjacentElement("afterbegin", toolbar);
+    editWrap.appendChild(this.editArea);
+  };
+
+  const onHeading = (event, btn, type) => {
+    event.preventDefault();
+    if (this.engine) {
+      this.engine.command.execute("heading", type);
+      const btnSiblings = btn.parentNode.children;
+      const headingType = this.engine.command.queryState("heading");
+      const boldBtn = document.getElementsByClassName(`${TOOLBAR_BTN_CLS} btn-bold`)?.[0];
+      if (boldBtn) {
+        boldBtn.setAttribute("disabled", true);
+        if (headingType !== type) {
+          boldBtn.removeAttribute("disabled");
+        }
+      }
+      const defaultCls = `${TOOLBAR_BTN_CLS} btn-${type}`;
+      Array.prototype.forEach.call(btnSiblings, (ele) => {
+        ele.className = defaultCls;
+        ele.removeAttribute("disabled");
+      });
+      btn.className = headingType === type ? `${defaultCls} active` : defaultCls;
+    }
+  };
+
+  const onList = (event, btn, type) => {
+    event.preventDefault();
+    if (this.engine) {
+      this.engine.command.execute("tasklist", type);
+      const btnSiblings = btn.parentNode.children;
+      const cmdType = this.engine.command.queryState("tasklist");
+      const defaultCls = `${TOOLBAR_BTN_CLS} btn-${type}`;
+      Array.prototype.forEach.call(btnSiblings, (ele) => {
+        ele.className = defaultCls;
+        ele.removeAttribute("disabled");
+      });
+      btn.className = cmdType === type ? `${defaultCls} active` : defaultCls;
+    }
+  };
+
+  const onCommon = (event, btn, type) => {
+    event.preventDefault();
+    if (this.engine) {
+      this.engine.command.execute(type);
+      const cmdType = this.engine.command.queryState(type);
+      const defaultCls = `${TOOLBAR_BTN_CLS} btn-${type}`;
+      btn.className = cmdType ? `${defaultCls} active` : defaultCls;
+      if (type === "bold") {
+        const tag = this.engine.command.queryState("heading") || "p";
+        if (/^h\d$/.test(tag)) {
+          btn.setAttribute("disabled", true);
+        } else {
+          btn.removeAttribute("disabled");
+        }
+      }
+    }
+  };
+
+  /**
+   * @description Create editor toolbar
+   * @param {Array} toolbarItem option.toolbarItem
+   */
+  this.createToolbar = (toolbarItem) => {
+    // toolbar wrapper
+    const toolbar_div = document.createElement("DIV");
+    toolbar_div.className = `${EDITOR_CLS}__toolbar`;
+
+    toolbarItem.forEach((itemGroup) => {
+      // toolbar group
+      const buttonGroup = document.createElement("DIV");
+      buttonGroup.className = `${EDITOR_CLS}__toolbar-group`;
+
+      if (Array.isArray(itemGroup)) {
+        itemGroup.forEach((item) => {
+          let btn = document.createElement("button");
+          let btn_txt = document.createTextNode(item);
+          // toolbar button className
+          btn.className = `${TOOLBAR_BTN_CLS} btn-${item}`;
+          if (headingGroup.includes(item)) {
+            btn.onclick = (e) => onHeading(e, btn, item);
+          } else if (listGroup.includes(item)) {
+            btn.onclick = (e) => onList(e, btn, item);
+          } else {
+            btn.onclick = (e) => onCommon(e, btn, item);
+          }
+          btn.appendChild(btn_txt);
+          buttonGroup.appendChild(btn);
+        });
+      }
+
+      toolbar_div.appendChild(buttonGroup);
+    });
+
+    return toolbar_div;
+  };
+}
+
+export default Constructor;
 ```
 
-You can view the development server at `localhost:8080`.
+editor.js
+```
+import constructor from "./constructor";
+import "./index.less";
 
-### Production build
+const renderEditor = () => {
+  const editor = new constructor({
+    editorElement: document.getElementById("root"),
+  });
+  editor.init({});
+};
 
-```bash
-npm run build
+export default renderEditor;
 ```
 
-## Features
+html
+```
+<div id="root"></div>
+```
 
-- [webpack](https://webpack.js.org/)
-- [Babel](https://babeljs.io/)
-- [Sass](https://sass-lang.com/)
-- [PostCSS](https://postcss.org/)
 
-## Dependencies
+**React**
+```
+import React from "react";
+import Engine from "next-editor-engine";
+import "./index.less";
 
-### webpack
+class Editor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.editArea = React.createRef();
+  }
 
-- [`webpack`](https://github.com/webpack/webpack) - Module and asset bundler.
-- [`webpack-cli`](https://github.com/webpack/webpack-cli) - Command line interface for webpack
-- [`webpack-dev-server`](https://github.com/webpack/webpack-dev-server) - Development server for webpack
-- [`webpack-merge`](https://github.com/survivejs/webpack-merge) - Simplify development/production configuration
-- [`cross-env`](https://github.com/kentcdodds/cross-env) - Cross platform configuration
+  componentDidMount() {
+    this.engine = this.renderEditor();
+  }
 
-### Babel
+  componentWillUnmount() {
+    this.engine && this.engine.destroy();
+  }
 
-- [`@babel/core`](https://www.npmjs.com/package/@babel/core) - Transpile ES6+ to backwards compatible JavaScript
-- [`@babel/plugin-proposal-class-properties`](https://babeljs.io/docs/en/babel-plugin-proposal-class-properties) - Use properties directly on a class (an example Babel config)
-- [`@babel/preset-env`](https://babeljs.io/docs/en/babel-preset-env) - Smart defaults for Babel
+  renderEditor() {
+    const engine = Engine.create(this.editArea.current, {});
+    engine.on("change", (value) => {
+      console.log(value);
+      this.updateState();
+    });
+    engine.on("select", () => {
+      this.updateState();
+    });
+    return engine;
+  }
 
-### Loaders
+  updateState() {
+    if (!this.engine) {
+      return;
+    }
 
-- [`babel-loader`](https://webpack.js.org/loaders/babel-loader/) - Transpile files with Babel and webpack
-- [`sass-loader`](https://webpack.js.org/loaders/sass-loader/) - Load SCSS and compile to CSS
-  - [`sass`](https://www.npmjs.com/package/sass) - Node Sass
-- [`postcss-loader`](https://webpack.js.org/loaders/postcss-loader/) - Process CSS with PostCSS
-  - [`postcss-preset-env`](https://www.npmjs.com/package/postcss-preset-env) - Sensible defaults for PostCSS
-- [`css-loader`](https://webpack.js.org/loaders/css-loader/) - Resolve CSS imports
-- [`style-loader`](https://webpack.js.org/loaders/style-loader/) - Inject CSS into the DOM
+    const h1State = {
+      className: this.engine.command.queryState("heading") === "h1" ? "toolbar-btn active" : "toolbar-btn",
+    };
 
-### Plugins
+    const h2State = {
+      className: this.engine.command.queryState("heading") === "h2" ? "toolbar-btn active" : "toolbar-btn",
+    };
 
-- [`clean-webpack-plugin`](https://github.com/johnagan/clean-webpack-plugin) - Remove/clean build folders
-- [`copy-webpack-plugin`](https://github.com/webpack-contrib/copy-webpack-plugin) - Copy files to build directory
-- [`html-webpack-plugin`](https://github.com/jantimon/html-webpack-plugin) - Generate HTML files from template
-- [`mini-css-extract-plugin`](https://github.com/webpack-contrib/mini-css-extract-plugin) - Extract CSS into separate files
-- [`css-minimizer-webpack-plugin`](https://webpack.js.org/plugins/css-minimizer-webpack-plugin/) - Optimize and minimize CSS assets
+    const h3State = {
+      className: this.engine.command.queryState("heading") === "h3" ? "toolbar-btn active" : "toolbar-btn",
+    };
 
-### Linters
+    const boldState = {
+      className: this.engine.command.queryState("bold") ? "toolbar-btn active" : "toolbar-btn",
+      disabled: function () {
+        const tag = this.engine.command.queryState("heading") || "p";
+        return /^h\d$/.test(tag);
+      }.call(this),
+    };
 
-- [`eslint`](https://github.com/eslint/eslint) - Enforce styleguide across application
-- [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) - Implement prettier rules
-  - - [`prettier`](https://github.com/prettier/prettier) - Dependency for `prettier-webpack-plugin` plugin
-- [`eslint-import-resolver-webpack`](https://github.com/benmosher/eslint-plugin-import/tree/master/resolvers/webpack) - Throw exceptions for import/export in webpack
+    const italicState = {
+      className: this.engine.command.queryState("italic") ? "toolbar-btn active" : "toolbar-btn",
+    };
 
-## Author
+    const underlineState = {
+      className: this.engine.command.queryState("underline") ? "toolbar-btn active" : "toolbar-btn",
+    };
 
-- [Meta Explore](https://meta-explore.github.io)
+    const quoteState = {
+      className: this.engine.command.queryState("quote") ? "toolbar-btn active" : "toolbar-btn",
+    };
 
-## License
+    const orderedlistState = {
+      className: this.engine.command.queryState("tasklist") === "orderedlist" ? "toolbar-btn active" : "toolbar-btn",
+    };
 
-This project is open source and available under the [MIT License](LICENSE).
+    const unorderedlistState = {
+      className: this.engine.command.queryState("tasklist") === "unorderedlist" ? "toolbar-btn active" : "toolbar-btn",
+    };
+
+    const tasklistState = {
+      className: this.engine.command.queryState("tasklist") === "tasklist" ? "toolbar-btn active" : "toolbar-btn",
+    };
+
+    this.setState({
+      h1State,
+      h2State,
+      h3State,
+      boldState,
+      italicState,
+      underlineState,
+      quoteState,
+      orderedlistState,
+      unorderedlistState,
+      tasklistState,
+    });
+  }
+
+  onHeading = (event, type) => {
+    event.preventDefault();
+    if (this.engine) {
+      this.engine.command.execute("heading", type);
+    }
+  };
+
+  onList = (event, type) => {
+    event.preventDefault();
+    if (this.engine) {
+      this.engine.command.execute("tasklist", type);
+    }
+  };
+
+  onCommon = (event, type) => {
+    event.preventDefault();
+    if (this.engine) {
+      this.engine.command.execute(type);
+    }
+  };
+
+  render() {
+    const {
+      boldState,
+      italicState,
+      underlineState,
+      quoteState,
+      h1State,
+      h2State,
+      h3State,
+      orderedlistState,
+      unorderedlistState,
+      tasklistState,
+    } = this.state;
+    return (
+      <div className="example-layout">
+        <h2 className="example-title">NEXT-EDITOR-ENGINE Example</h2>
+        <div className="next-editor">
+          <div className="next-editor__toolbar">
+            <div className="next-editor__toolbar-group">
+              <button
+                {...h1State}
+                onClick={(event) => {
+                  this.onHeading(event, "h1");
+                }}
+              >
+                h1
+              </button>
+              <button
+                {...h2State}
+                onClick={(event) => {
+                  this.onHeading(event, "h2");
+                }}
+              >
+                h2
+              </button>
+              <button
+                {...h3State}
+                onClick={(event) => {
+                  this.onHeading(event, "h3");
+                }}
+              >
+                h3
+              </button>
+            </div>
+            <div className="next-editor__toolbar-group">
+              <button
+                {...boldState}
+                onClick={(event) => {
+                  this.onCommon(event, "bold");
+                }}
+              >
+                bold
+              </button>
+              <button
+                {...italicState}
+                onClick={(event) => {
+                  this.onCommon(event, "italic");
+                }}
+              >
+                italic
+              </button>
+              <button
+                {...underlineState}
+                onClick={(event) => {
+                  this.onCommon(event, "underline");
+                }}
+              >
+                underline
+              </button>
+              <button
+                {...quoteState}
+                onClick={(event) => {
+                  this.onCommon(event, "quote");
+                }}
+              >
+                quote
+              </button>
+            </div>
+            <div className="next-editor__toolbar-group">
+              <button
+                {...orderedlistState}
+                onClick={(event) => {
+                  this.onList(event, "orderedlist");
+                }}
+              >
+                orderedlist
+              </button>
+              <button
+                {...unorderedlistState}
+                onClick={(event) => {
+                  this.onList(event, "unorderedlist");
+                }}
+              >
+                unorderedlist
+              </button>
+              <button
+                {...tasklistState}
+                onClick={(event) => {
+                  this.onList(event, "tasklist");
+                }}
+              >
+                tasklist
+              </button>
+            </div>
+          </div>
+          <div className="next-editor_content" ref={this.editArea}></div>
+        </div>
+      </div>
+    );
+  }
+}
+export default Editor;
+```
