@@ -31,7 +31,7 @@ This is the core engine library of the editor, which has the basic functions req
 **✨ JS**
 
 constructor.js  
-```
+```js
 import Engine from "next-editor-engine";
 
 const EDITOR_CLS = "next-editor";
@@ -203,7 +203,7 @@ export default Constructor;
 ```
 
 editor.js
-```
+```js
 import constructor from "./constructor";
 import "./index.less";
 
@@ -218,13 +218,13 @@ export default renderEditor;
 ```
 
 html
-```
+```html
 <div id="root"></div>
 ```
 
 
 **✨ React**
-```
+```js
 import React from "react";
 import Engine from "next-editor-engine";
 import "./index.less";
