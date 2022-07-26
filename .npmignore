@@ -26,6 +26,7 @@ test/
 postcss.config.js
 jsconfig.json
 tsconfig.json
+.husky/
 config/
 public/
 scripts/
