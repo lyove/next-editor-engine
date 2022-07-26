@@ -1,7 +1,7 @@
 # 📦 Next-Editor-Engine
 This is the core engine library of the editor, which has the basic functions required for general editing.
 
-## Engine basic functions
+## ✅ Engine basic functions
 + bold (ctrl + b)
 + italic (ctrl + i)
 + underline (ctrl + u)
@@ -26,9 +26,9 @@ This is the core engine library of the editor, which has the basic functions req
 + markdown
 
 
-## Usage
+## 💎 Usage
 
-**JS**
+**✨ JS**
 
 constructor.js  
 ```
@@ -223,7 +223,7 @@ html
 ```
 
 
-**React**
+**✨ React**
 ```
 import React from "react";
 import Engine from "next-editor-engine";
