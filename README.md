@@ -222,6 +222,7 @@ html
 <div id="root"></div>
 ```
 
+----
 
 **✨ React**
 ```js
