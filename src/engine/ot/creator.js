@@ -1,4 +1,4 @@
-import { EventEmitter2 } from "eventemitter2";
+import { EventEmitter } from "../vendor/eventemitter";
 import getNodeModel from "../models/node";
 import PathNode from "./path-node";
 import DiffMatchPatch from "diff-match-patch";
@@ -35,7 +35,7 @@ function getArray(data, len) {
   return array;
 }
 
-class Creator extends EventEmitter2 {
+class Creator extends EventEmitter {
   constructor(engine, n) {
     super();
     this.engine = engine;
