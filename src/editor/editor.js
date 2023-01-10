@@ -1,6 +1,6 @@
 import Engine from "../engine";
 import Toolbar from "./toolbar";
-import { createElement } from "./help/Dom";
+import { createElement } from "./help/dom";
 import { EDITOR_CLS, defaultToolbarItem } from "./constants";
 
 /**
