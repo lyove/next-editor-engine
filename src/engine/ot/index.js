@@ -1,5 +1,5 @@
 import { cloneDeep, debounce } from "lodash";
-import { EventEmitter2 } from "eventemitter2";
+import { EventEmitter } from "../vendor/eventemitter";
 import SelectionData from "./selection-data";
 import RangeColoring from "./range-coloring";
 import Mutation from "./mutation";
@@ -20,7 +20,7 @@ const colors = [
   "#40A9FF",
 ];
 
-class OT extends EventEmitter2 {
+class OT extends EventEmitter {
   constructor(engine) {
     super();
     const { editArea, parentNode } = engine;
