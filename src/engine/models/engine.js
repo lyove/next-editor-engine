@@ -215,8 +215,8 @@ class Engine {
     this.history = this.change.history;
     this.domEvent = this.change.domEvent;
     this.event = new Event(this);
-    // this.event 不支持 promise，所以另外引入 EventEmitter2，用于异步场景
-    this.asyncEvent = new EventEmitter2({
+    // this.event 不支持 promise，所以另外引入 EventEmitter，用于异步场景
+    this.asyncEvent = new EventEmitter({
       wildcard: true,
       // should the event emitter use wildcards.
       delimiter: ":",
