@@ -18,7 +18,7 @@ import ParserConversion from "../parser/conversion";
 import constantsSchema from "../constants/schema";
 import Change from "./change";
 import Event from "./event";
-import EventEmitter2 from "eventemitter2";
+import EventEmitter from "../vendor/eventemitter";
 import Command from "./command";
 import Hotkey from "./hotkey";
 import OT from "../ot";
