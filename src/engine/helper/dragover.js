@@ -2,7 +2,6 @@ import { getCardRoot } from "../utils/card";
 import { getDocument } from "../utils/node";
 /**
  * @fileOverview 编辑态
- * @author huangtonger@aliyun.com
  */
 const CARD_CURSOR_WIDTH = 2;
 
