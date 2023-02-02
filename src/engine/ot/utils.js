@@ -1,4 +1,4 @@
-import isEqual from "lodash/isEqual";
+import { isEqual } from "lodash";
 import getNodeModel from "../models/node";
 import { CARD_SELECTOR } from "../constants/card";
 import { downRange } from "../utils/range";
