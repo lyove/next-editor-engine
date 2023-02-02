@@ -1,5 +1,5 @@
+import { cloneDeep } from "lodash";
 import conversion from "../constants/conversion";
-import lodashCloneDeep from "lodash/cloneDeep";
 
 class Conversion {
   constructor() {
@@ -11,7 +11,7 @@ class Conversion {
   }
 
   clone() {
-    const dupData = lodashCloneDeep(this.data);
+    const dupData = cloneDeep(this.data);
     const dupConversion = new Conversion();
     dupConversion.data = dupData;
     return dupConversion;
