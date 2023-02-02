@@ -1,5 +1,5 @@
+import { cloneDeep } from "lodash";
 import { BLOCK_TAG_MAP, INLINE_TAG_MAP, MARK_TAG_MAP } from "../constants/tags";
-import lodashCloneDeep from "lodash/cloneDeep";
 
 const mergeProps = (props, otherProps) => {
   // merge attributes
@@ -79,7 +79,7 @@ class Schema {
   }
 
   clone() {
-    const dupData = lodashCloneDeep(this.data);
+    const dupData = cloneDeep(this.data);
     const dupSchema = new Schema();
     dupSchema.data = dupData;
     return dupSchema;
