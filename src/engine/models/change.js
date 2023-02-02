@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import debounce from "lodash/debounce";
+import { debounce } from "lodash";
 import getNodeModel from "./node";
 import { shrinkRange, createBookmark, moveToBookmark, upRange } from "../utils/range";
 import { getWindow, fetchAllChildren, isEmptyNodeWithTrim, isEmptyNode } from "../utils/node";
