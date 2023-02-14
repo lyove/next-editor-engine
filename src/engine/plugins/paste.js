@@ -1,4 +1,4 @@
-import tinycolor2 from "tinycolor2";
+import tinycolor from "../helper/tiny-color";
 import getNodeModel from "../models/node";
 import { CARD_SELECTOR, READY_CARD_KEY, READY_CARD_SELECTOR } from "../constants/card";
 import { ROOT_SELECTOR } from "../constants/root";
@@ -18,10 +18,10 @@ import ParserMarkdown from "../parser/markdown";
 const getDefaultStyleList = function () {
   const defaultStyleList = [
     {
-      color: tinycolor2(this.editArea.css("color")).toHex(),
+      color: tinycolor(this.editArea.css("color")).toHex(),
     },
     {
-      "background-color": tinycolor2("white").toHex(),
+      "background-color": tinycolor("white").toHex(),
     },
     {
       "font-size": this.editArea.css("font-size"),
@@ -32,10 +32,10 @@ const getDefaultStyleList = function () {
   if (cardRoot.length > 0) {
     const editArea = cardRoot.closest(ROOT_SELECTOR);
     defaultStyleList.push({
-      color: tinycolor2(editArea.css("color")).toHex(),
+      color: tinycolor(editArea.css("color")).toHex(),
     });
     defaultStyleList.push({
-      "background-color": tinycolor2(editArea.css("background-color")).toHex(),
+      "background-color": tinycolor(editArea.css("background-color")).toHex(),
     });
   }
   return defaultStyleList;
@@ -59,7 +59,7 @@ const commonNormalize = function (fragment) {
         let currentValue = node[0].style[key];
         if (currentValue) {
           if (/color$/.test(key)) {
-            currentValue = tinycolor2(currentValue).toHex();
+            currentValue = tinycolor(currentValue).toHex();
           }
           if (currentValue === defaultValue) {
             node.css(key, "");
