@@ -1,5 +1,5 @@
 import { cloneDeep, debounce } from "lodash";
-import { EventEmitter } from "../vendor/eventemitter";
+import { EventEmitter } from "../helper/eventemitter";
 import SelectionData from "./selection-data";
 import RangeColoring from "./range-coloring";
 import Mutation from "./mutation";
