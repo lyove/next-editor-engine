@@ -26,20 +26,30 @@ module.exports = merge(common, {
     rules: [
       // Styles: Inject CSS into the head with source maps
       {
-        test: /\.(sass|scss|css)$/,
+        test: /\.(css)$/,
         use: [
           "style-loader",
           {
             loader: "css-loader",
-            options: { sourceMap: true, importLoaders: 1, modules: false },
+            options: {
+              sourceMap: true,
+              importLoaders: 1,
+              modules: false
+            },
           },
-          { loader: "postcss-loader", options: { sourceMap: true } },
-          { loader: "sass-loader", options: { sourceMap: true } },
         ],
       },
       {
         test: /\.less$/,
-        use: ["style-loader", { loader: "css-loader" }, { loader: "less-loader" }],
+        use: [
+          "style-loader",
+          {
+            loader: "css-loader"
+          },
+          {
+            loader: "less-loader"
+          }
+        ],
       },
     ],
   },
