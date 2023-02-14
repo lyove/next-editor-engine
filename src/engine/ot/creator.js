@@ -1,4 +1,4 @@
-import { EventEmitter } from "../helper/eventemitter";
+import EventEmitter from "../helper/eventemitter";
 import getNodeModel from "../models/node";
 import PathNode from "./path-node";
 import DiffMatchPatch from "diff-match-patch";
