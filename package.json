@@ -48,12 +48,7 @@
     "lint-staged": "^13.0.3",
     "json-loader": "^0.5.7",
     "mini-css-extract-plugin": "^2.4.2",
-    "postcss": "^7.0.39",
-    "postcss-loader": "^6.2.0",
-    "postcss-preset-env": "^6.7.0",
     "prettier": "^2.4.1",
-    "sass": "^1.43.5",
-    "sass-loader": "^12.2.0",
     "style-loader": "^3.3.0",
     "url-loader": "^4.1.1",
     "webpack": "^5.58.2",
@@ -62,11 +57,8 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "blueimp-md5": "^2.12.0",
-    "copy-to-clipboard": "^3.2.0",
     "diff-dom": "^4.1.6",
     "diff-match-patch": "^1.0.4",
-    "filesize": "^4.1.2",
     "lodash": "^4.17.21",
     "markdown-it": "^8.4.2",
     "markdown-it-abbr": "^1.0.4",
@@ -76,8 +68,7 @@
     "markdown-it-ins": "^2.0.0",
     "markdown-it-mark": "^2.0.0",
     "markdown-it-sub": "^1.0.0",
-    "markdown-it-sup": "^1.0.0",
-    "tinycolor2": "^1.4.1"
+    "markdown-it-sup": "^1.0.0"
   },
   "repository": {
     "type": "git",
@@ -92,7 +83,7 @@
       "prettier --write",
       "eslint --fix"
     ],
-    "*.{less,scss,css}": "stylelint --fix"
+    "*.{less,css}": "stylelint --fix"
   },
   "husky": {
     "hooks": {
