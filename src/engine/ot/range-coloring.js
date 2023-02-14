@@ -2,7 +2,7 @@ import { getClientRect, getSubRanges, shrinkRange } from "../utils/range";
 import { removeUnit, escape } from "../utils/string";
 import getNodeModel from "../models/node";
 import TinyCanvas from "../helper/tiny-canvas";
-import tinycolor2 from "tinycolor2";
+import tinycolor from "../helper/tiny-color";
 import tooltip from "../embed-toolbar/tooltip";
 import { fromPath } from "./utils";
 
@@ -74,10 +74,10 @@ class RangeColoring {
   drawBackground(range, options) {
     const parentNode = this.parentNode;
     const { uuid, color } = options;
-    const tinyColor = tinycolor2(color);
-    tinyColor.setAlpha(0.3);
+    const colour = tinycolor(color);
+    colour.setAlpha(0.3);
     let targetCanvas;
-    const rgb = tinyColor.toRgbString();
+    const rgb = colour.toRgbString();
     let backgroundChild = parentNode.children(
       '.xEditor-user-background[data-uuid="'.concat(uuid, '"]')
     );
@@ -330,9 +330,9 @@ class RangeColoring {
   setCardSelectedByOther(component, info) {
     const { uuid, color } = info;
     if (color) {
-      const tinyColor = tinycolor2(color);
-      tinyColor.setAlpha(0.3);
-      const rgb = tinyColor.toRgbString();
+      const colour = tinycolor(color);
+      colour.setAlpha(0.3);
+      const rgb = colour.toRgbString();
       let o;
       if (component.selectByOther && !component.state.selectedByOther) {
         o = component.selectByOther(color, rgb);
@@ -349,9 +349,9 @@ class RangeColoring {
   setCardActivatedByOther(component, info) {
     const { uuid, color } = info;
     if (color) {
-      const tinyColor = tinycolor2(color);
-      tinyColor.setAlpha(0.3);
-      const rgb = tinyColor.toRgbString();
+      const colour = tinycolor(color);
+      colour.setAlpha(0.3);
+      const rgb = colour.toRgbString();
       let o;
       if (component.activateByOther && !component.state.activatedByOther) {
         o = component.activateByOther(color, rgb);
@@ -494,7 +494,7 @@ class RangeColoring {
       const trigger = node.find(".xEditor-user-cursor-trigger");
       const left = node.css("left");
       const top = node.css("top");
-      const bgColor = tinycolor2(node.css("background-color"));
+      const bgColor = tinycolor(node.css("background-color"));
       if (cursorRect.left === left && cursorRect.top === top) {
         bgColor.setAlpha(0.3);
       } else {
