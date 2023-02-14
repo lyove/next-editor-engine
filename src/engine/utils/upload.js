@@ -1,4 +1,4 @@
-import filesize from "filesize";
+import filesize from "./filesize";
 import mime from "../constants/mime";
 import exts from "../constants/exts";
 import { windows } from "./ua";
