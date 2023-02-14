@@ -23,7 +23,6 @@ test/
 .gitignore
 .prettierrc.js
 .stylelintrc.js
-postcss.config.js
 jsconfig.json
 tsconfig.json
 .husky/
