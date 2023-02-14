@@ -17,10 +17,6 @@ class Editor {
       console.log(value);
       this.updateState();
     });
-    this.engine.on("select", (e) => {
-      console.log(e);
-      this.updateState();
-    });
   }
 
   updateState() {
