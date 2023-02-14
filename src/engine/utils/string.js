@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-cond-assign */
-import blueimpMd5 from "blueimp-md5";
+import jsMD5 from "../helper/md5";
 import { XEDITOR_ELEMENT, ANCHOR, FOCUS, CURSOR } from "../constants/bookmark";
 import { CARD_TYPE_KEY, READY_CARD_KEY, CARD_VALUE_KEY } from "../constants/card";
 
@@ -9,7 +9,7 @@ export const escapeRegExp = (e) => {
 };
 
 export const md5 = (value) => {
-  return blueimpMd5(value);
+  return jsMD5(value);
 };
 
 export const randomId = () => {
