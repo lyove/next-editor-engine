@@ -1,4 +1,4 @@
-import copyToClipboard from "copy-to-clipboard";
+import copyToClipboard from "../helper/copy-to-clipboard";
 import getNodeModel from "../models/node";
 import { fetchAllChildren } from "../utils/node";
 import ExportParser from "../parser/export";
