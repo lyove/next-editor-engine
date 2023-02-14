@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 /* eslint-disable no-unused-vars */
 import PathNode from "./path-node";
 import getNodeModel from "../models/node";
@@ -164,11 +163,18 @@ class Applier {
     const dataArray = getArray(dataObj, 4);
     const [node1, node2, node3, node4] = dataArray;
     if (node1 && !getNodeModel(node1).isRoot()) {
+      const node = node1;
+      const nodeDom = toDOM(t);
+      const pathNode = PathNode.getPathNode(node3);
+      const pNode = PathNode.create(nodeDom, pathNode, true);
+      const w = t;
+      const attributes = Array.from(node1.attributes).map((attr) => {
+        return attr.name;
+      });
+      const dataArray = new Set([].concat(...Object.keys(w), ...attributes));
+
       switch (node4) {
         case JSONML.TAG_NAME_INDEX:
-          const node = node1;
-          const nodeDom = toDOM(t);
-          const pathNode = PathNode.getPathNode(node3);
           if (!pathNode) {
             console.warn("No parentPathNode found, aborting. This shouldn't happen, but...");
             return;
@@ -184,18 +190,12 @@ class Applier {
 
           node3.insertBefore(nodeDom, node || null);
           node1.remove();
-          const pNode = PathNode.create(nodeDom, pathNode, true);
           if (!pNode) {
             break;
           }
           pathNode.children.splice(node2, 1, pNode);
           break;
         case JSONML.ATTRIBUTE_INDEX:
-          const w = t;
-          const attributes = Array.from(node1.attributes).map((attr) => {
-            return attr.name;
-          });
-          const dataArray = new Set([].concat(...Object.keys(w), ...attributes));
           dataArray.forEach((data) => {
             if (data in w) {
               node1.setAttribute(data, w[data]);
@@ -218,6 +218,10 @@ class Applier {
     const dataArray = getArray(dataObj, 4);
     let [node1, node2, node3, node4] = dataArray;
 
+    const { nodeValue } = node3;
+    const value = nodeValue.substring(0, offset) + text + nodeValue.substring(offset);
+    const range = getRange(node3);
+
     switch (node4) {
       case JSONML.TAG_NAME_INDEX:
         throw Error("Unsupported indexType JSONML.TAG_NAME_INDEX (0)");
@@ -228,9 +232,6 @@ class Applier {
         if (!getNodeModel(node3).isText()) {
           return;
         }
-        const { nodeValue } = node3;
-        const value = nodeValue.substring(0, offset) + text + nodeValue.substring(offset);
-        const range = getRange(node3);
         node3.nodeValue = value;
         if (range) {
           if (range.endContainer === node3 && range.endOffset > offset) {
@@ -250,6 +251,11 @@ class Applier {
     const dataObj = PathNode.elementAtPath(editArea[0], e);
     const dataArray = getArray(dataObj, 4);
     let [node1, node2, node3, node4] = dataArray;
+
+    const range = getRange(node3);
+    const { nodeValue } = node3;
+    const value = nodeValue.substring(0, offset) + nodeValue.substring(offset + text.length);
+
     switch (node4) {
       case JSONML.TAG_NAME_INDEX:
         throw Error("Unsupported indexType JSONML.TAG_NAME_INDEX (0)");
@@ -260,9 +266,6 @@ class Applier {
         if (!getNodeModel(node3).isText()) {
           return;
         }
-        const range = getRange(node3);
-        const { nodeValue } = node3;
-        const value = nodeValue.substring(0, offset) + nodeValue.substring(offset + text.length);
         node3.nodeValue = value;
         if (range) {
           if (range.endContainer === node3 && range.endOffset > offset) {
