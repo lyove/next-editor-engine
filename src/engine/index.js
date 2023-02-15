@@ -1,5 +1,5 @@
 /* eslint-disable no-import-assign */
-import "./index.less";
+import "./index.css";
 import Engine from "./models/engine";
 import Checkbox from "./card/checkbox";
 import Hr from "./card/hr";

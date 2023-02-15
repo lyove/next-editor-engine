@@ -137,7 +137,7 @@ html
 ```js
 import React from "react";
 import Engine from "next-editor-engine";
-import "./index.less";
+import "./index.css";
 
 class Editor extends React.Component {
   constructor(props) {
