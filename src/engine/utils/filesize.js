@@ -77,7 +77,7 @@ export default function filesize(arg, {
     neg = num < 0,
     roundingFunc = Math[roundingMethod];
 
-  if (typeof arg !== "bigint" && isNaN(arg)) {
+  if (isNaN(arg)) {
     throw new TypeError(INVALID_NUMBER);
   }
 
