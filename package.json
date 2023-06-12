@@ -72,7 +72,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:lyove/next-editor-engine"
+    "url": "https://github.com/lyove/next-editor-engine.git"
   },
   "browserslist": [
     "> 1%",
