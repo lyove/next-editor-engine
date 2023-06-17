@@ -58,7 +58,7 @@ export default renderEditor;
 ```
 
 editor.js
-```
+```js
 /**
  * Editor
  */
