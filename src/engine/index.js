@@ -1,8 +1,14 @@
 /* eslint-disable no-import-assign */
+// style
 import "./index.css";
+
 import Engine from "./models/engine";
+
+// card
 import Checkbox from "./card/checkbox";
 import Hr from "./card/hr";
+
+// plugins
 import paste from "./plugins/paste";
 import drop from "./plugins/drop";
 import undo from "./plugins/undo";
@@ -31,9 +37,15 @@ import link from "./plugins/link";
 import markdown from "./plugins/markdown";
 import alert from "./plugins/alert";
 
+// file extensions
 import exts from "./constants/exts";
+
+// userAgent
 import * as ua from "./utils/ua";
+
 import $ from "./models/node";
+
+// utils
 import * as StringUtils from "./utils/string";
 import * as NodeUtils from "./utils/node";
 import * as RangeUtils from "./utils/range";
@@ -42,19 +54,28 @@ import * as ImageUtils from "./utils/image";
 import * as UploadUtils from "./utils/upload";
 import * as ChangeUtils from "./changes/utils";
 import * as OTUtils from "./ot/utils";
+
+// other
 import TinyCanvas from "./helper/tiny-canvas";
 import Schema from "./parser/schema";
 import ExportParser from "./parser/export";
 import HTMLParser from "./parser/html";
 import TextParser from "./parser/text";
 import MarkdownParser from "./parser/markdown";
-import isHotkey from "./utils/is-hotkey";
-import * as changes from "./changes";
 import EmbedToolbar from "./embed-toolbar";
 import ContentView from "./models/content-view";
 
+// is hotkey
+import isHotkey from "./utils/is-hotkey";
+
+// changes
+import * as changes from "./changes";
+
+// card
 Engine.card.add("checkbox", Checkbox);
 Engine.card.add("hr", Hr);
+
+// plugins
 Engine.plugin.add("paste", paste);
 Engine.plugin.add("drop", drop);
 Engine.plugin.add("undo", undo);
@@ -82,9 +103,15 @@ Engine.plugin.add("tasklist", tasklist);
 Engine.plugin.add("link", link);
 Engine.plugin.add("markdown", markdown);
 Engine.plugin.add("alert", alert);
+
+// file extensions
 Engine.EXTS = exts;
+
+// userAgent
 Engine.ua = ua;
 Engine.$ = $;
+
+// utils
 Engine.StringUtils = StringUtils;
 Engine.NodeUtils = NodeUtils;
 Engine.RangeUtils = RangeUtils;
@@ -93,17 +120,23 @@ Engine.ImageUtils = ImageUtils;
 Engine.UploadUtils = UploadUtils;
 Engine.ChangeUtils = ChangeUtils;
 Engine.OTUtils = OTUtils;
+
+// other
 Engine.TinyCanvas = TinyCanvas;
-Engine.OTUtils = OTUtils;
 Engine.Schema = Schema;
 Engine.HTMLParser = HTMLParser;
 Engine.ExportParser = ExportParser;
 Engine.TextParser = TextParser;
 Engine.MarkdownParser = MarkdownParser;
-Engine.isHotkey = isHotkey;
-Engine.changes = changes;
 Engine.EmbedToolbar = EmbedToolbar;
 Engine.ContentView = ContentView;
+
+//is hotkey
+Engine.isHotkey = isHotkey;
+// changes
+Engine.changes = changes;
+
+// clipboard export parser
 Engine.registerClipboardExportParser = (parser) => {
   ClipboardUtils.exportParser = parser;
 };
