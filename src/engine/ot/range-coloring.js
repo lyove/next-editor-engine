@@ -26,13 +26,13 @@ class RangeColoring {
   }
 
   getRelativeRect(node, range) {
-    const clientReact = getClientRect(range);
-    const react = node[0].getBoundingClientRect();
+    const clientRect = getClientRect(range);
+    const rect = node[0].getBoundingClientRect();
     return {
-      x: clientReact.left - react.left,
-      y: clientReact.top - react.top,
-      width: clientReact.right - clientReact.left,
-      height: clientReact.bottom - clientReact.top,
+      x: clientRect.left - rect.left,
+      y: clientRect.top - rect.top,
+      width: clientRect.right - clientRect.left,
+      height: clientRect.bottom - clientRect.top,
     };
   }
 
@@ -49,11 +49,11 @@ class RangeColoring {
   isRangeWrap(range) {
     const cloneRange = range.cloneRange();
     cloneRange.collapse(true);
-    const clientReact = getClientRect(cloneRange);
+    const clientRect = getClientRect(cloneRange);
     const cloneRange1 = range.cloneRange();
     cloneRange1.collapse(false);
-    const clientReact1 = getClientRect(cloneRange1);
-    return clientReact.bottom !== clientReact1.bottom;
+    const clientRect1 = getClientRect(cloneRange1);
+    return clientRect.bottom !== clientRect1.bottom;
   }
 
   drawOneByOne(node, canvas, range, color) {
