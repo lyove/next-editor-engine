@@ -57,7 +57,6 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "diff-dom": "^4.1.6",
     "diff-match-patch": "^1.0.4",
     "lodash": "^4.17.21",
     "markdown-it": "^13.0.1",
