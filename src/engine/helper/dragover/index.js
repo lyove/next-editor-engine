@@ -1,8 +1,6 @@
 import { getCardRoot } from "../../utils/card";
 import { getDocument } from "../../utils/node";
-/**
- * @fileOverview 编辑态
- */
+
 const CARD_CURSOR_WIDTH = 2;
 
 class DragoverHelper {
