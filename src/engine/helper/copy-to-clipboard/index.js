@@ -1,22 +1,50 @@
-"use strict";
-
-var deselectCurrent = require("../toggle-selection");
-
-var clipboardToIE11Formatting = {
+const clipboardToIE11Formatting = {
   "text/plain": "Text",
   "text/html": "Url",
-  "default": "Text"
+  default: "Text",
+};
+
+const defaultMessage = "Copy to clipboard: #{key}, Enter";
+
+function toggleSelection() {
+  let selection = document.getSelection();
+  if (!selection.rangeCount) {
+    return function () {};
+  }
+  let active = document.activeElement;
+  const ranges = [];
+  for (let i = 0; i < selection.rangeCount; i++) {
+    ranges.push(selection.getRangeAt(i));
+  }
+  switch (active.tagName.toUpperCase()) {
+    // .toUpperCase handles XHTML
+    case "INPUT":
+    case "TEXTAREA":
+      active.blur();
+      break;
+    default:
+      active = null;
+      break;
+  }
+  selection.removeAllRanges();
+  return function () {
+    selection.type === "Caret" && selection.removeAllRanges();
+    if (!selection.rangeCount) {
+      ranges.forEach(function (range) {
+        selection.addRange(range);
+      });
+    }
+    active && active.focus();
+  };
 }
 
-var defaultMessage = "Copy to clipboard: #{key}, Enter";
-
 function format(message) {
-  var copyKey = (/mac os x/i.test(navigator.userAgent) ? "⌘" : "Ctrl") + "+C";
+  const copyKey = (/mac os x/i.test(navigator.userAgent) ? "⌘" : "Ctrl") + "+C";
   return message.replace(/#{\s*key\s*}/g, copyKey);
 }
 
-function copy(text, options) {
-  var debug,
+export default function copy(text, options) {
+  let debug,
     message,
     reselectPrevious,
     range,
@@ -28,7 +56,7 @@ function copy(text, options) {
   }
   debug = options.debug || false;
   try {
-    reselectPrevious = deselectCurrent();
+    reselectPrevious = toggleSelection();
 
     range = document.createRange();
     selection = document.getSelection();
@@ -36,7 +64,7 @@ function copy(text, options) {
     mark = document.createElement("span");
     mark.textContent = text;
     // avoid screen readers from reading out loud the text
-    mark.ariaHidden = "true"
+    mark.ariaHidden = "true";
     // reset user styles for span element
     mark.style.all = "unset";
     // prevents scrolling to the end of the page
@@ -50,17 +78,20 @@ function copy(text, options) {
     mark.style.MozUserSelect = "text";
     mark.style.msUserSelect = "text";
     mark.style.userSelect = "text";
-    mark.addEventListener("copy", function(e) {
+    mark.addEventListener("copy", function (e) {
       e.stopPropagation();
       if (options.format) {
         e.preventDefault();
-        if (typeof e.clipboardData === "undefined") { // IE 11
+        if (typeof e.clipboardData === "undefined") {
+          // IE 11
           debug && console.warn("unable to use e.clipboardData");
           debug && console.warn("trying IE specific stuff");
           window.clipboardData.clearData();
-          var format = clipboardToIE11Formatting[options.format] || clipboardToIE11Formatting["default"]
-          window.clipboardData.setData(format, text);
-        } else { // all other browsers
+          const _format =
+            clipboardToIE11Formatting[options.format] || clipboardToIE11Formatting["default"];
+          window.clipboardData.setData(_format, text);
+        } else {
+          // all other browsers
           e.clipboardData.clearData();
           e.clipboardData.setData(options.format, text);
         }
@@ -76,7 +107,7 @@ function copy(text, options) {
     range.selectNodeContents(mark);
     selection.addRange(range);
 
-    var successful = document.execCommand("copy");
+    const successful = document.execCommand("copy");
     if (!successful) {
       throw new Error("copy command was unsuccessful");
     }
@@ -111,5 +142,3 @@ function copy(text, options) {
 
   return success;
 }
-
-module.exports = copy;
