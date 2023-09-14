@@ -1,5 +1,5 @@
 import getNodeModel from "./node";
-import { DiffDOM } from "diff-dom/dist";
+import { DiffDOM } from "../helper/diff-dom";
 import { CARD_SELECTOR, CARD_VALUE_KEY } from "../constants/card";
 import { CURSOR_SELECTOR, ANCHOR_SELECTOR, FOCUS_SELECTOR } from "../constants/bookmark";
 import { encodeCardValue, removeBookmarkTags } from "../utils/string";
