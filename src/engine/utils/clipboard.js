@@ -201,7 +201,7 @@ const onCut = () => {
 };
 
 customClipboard();
-const exportParser = defaultParser.parser;
+const { exportParser } = defaultParser;
 export {
   copyText,
   copyNode,
