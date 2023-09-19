@@ -14,7 +14,7 @@ function M(e, t, n) {
   if (!t) {
     return null;
   }
-  var a = n,
+  let a = n,
     i = [...a],
     r = i[0],
     o = i.slice(1);
@@ -35,6 +35,9 @@ function getArray(data, len) {
   return array;
 }
 
+/**
+ * Creator
+ */
 class Creator extends EventEmitter {
   constructor(engine, n) {
     super();
@@ -44,13 +47,13 @@ class Creator extends EventEmitter {
   }
 
   patchesToOps(e, t, n) {
-    var i = [],
+    let i = [],
       o = this.dmp.patch_make(t, n);
-    Object.keys(o).forEach(function (t) {
-      var n = o[t],
-        a = n.start1;
-      n.diffs.forEach(function (t) {
-        var n = getArray(t, 2),
+    Object.keys(o).forEach(function (j) {
+      let k = o[j],
+        a = k.start1;
+      k.diffs.forEach(function (h) {
+        let n = getArray(h, 2),
           o = n[0],
           s = n[1];
         o !== DiffMatchPatch.DIFF_DELETE
@@ -75,7 +78,7 @@ class Creator extends EventEmitter {
     if (isTransientAttribute(target, attributeName)) {
       return [];
     }
-    var u = escapeDots(attributeName),
+    let u = escapeDots(attributeName),
       h = t.toPath(),
       p = [].concat(...h, [JSONML.ATTRIBUTE_INDEX, u]),
       g = escape(target.getAttribute(attributeName)),
@@ -83,12 +86,12 @@ class Creator extends EventEmitter {
     if (!m) {
       return [];
     }
-    var v = m[u];
+    let v = m[u];
     if (v === g) {
       return [];
     }
     if (null != v && null !== g && "data-card-value" === u) {
-      var b = getNodeModel(target),
+      let b = getNodeModel(target),
         k = engine.card.getComponent(b);
       if (k && k.isEqualValue && k.isEqualValue(decodeCardValue(v), decodeCardValue(g))) {
         return [];
@@ -122,7 +125,7 @@ class Creator extends EventEmitter {
 
   characterDataMutation(e, t) {
     const { doc } = this;
-    var path = t.toPath(),
+    let path = t.toPath(),
       o = M(doc, path),
       s = "string" === typeof o && (o || ""),
       data = e.target.data,
@@ -140,20 +143,20 @@ class Creator extends EventEmitter {
       const { target } = e;
       doc = PathNode.getPathNode(node, target);
       if ((!doc || t.id !== doc.parent.id) && ((doc = PathNode.create(node, t)), doc)) {
-        var o = node.previousSibling,
+        let o = node.previousSibling,
           s = PathNode.getPathNode(o, target);
         while (o && !s) {
           o = o.previousSibling;
           s = PathNode.getPathNode(o, target);
         }
         if (o) {
-          var l = t.children.indexOf(s);
+          let l = t.children.indexOf(s);
           t.children.splice(l + 1, 0, doc);
         } else {
           node.nextSibling ? t.children.unshift(doc) : t.children.push(doc);
         }
 
-        var c = PathNode.getPathNode(node, target).toPath(),
+        let c = PathNode.getPathNode(node, target).toPath(),
           h = {
             li: fromDOM(node),
             p: c,
@@ -162,13 +165,13 @@ class Creator extends EventEmitter {
       }
     });
     Array.from(e.removedNodes).forEach(function (t) {
-      var n = PathNode.getPathNode(t, e.target);
+      let n = PathNode.getPathNode(t, e.target);
       if (n) {
-        var a = n.toPath();
+        let a = n.toPath();
         n.remove();
-        var o = M(doc, a);
+        let o = M(doc, a);
         if (o) {
-          var s = {
+          const s = {
             ld: o,
             p: a,
           };
@@ -181,7 +184,7 @@ class Creator extends EventEmitter {
   }
 
   getOperations(e) {
-    var t = [],
+    let t = [],
       n = PathNode.getPathNode(e.target);
     if (n) {
       if ("attributes" === e.type) {
