@@ -1,7 +1,7 @@
 import EventEmitter from "../helper/eventemitter";
 import getNodeModel from "../models/node";
 import PathNode from "./path-node";
-import DiffMatchPatch from "diff-match-patch";
+import DiffMatchPatch from "../helper/diff-match-patch";
 import { isTransientAttribute } from "./utils";
 import { escapeDots, escape, decodeCardValue } from "../utils/string";
 import { JSONML } from "../constants/ot";
